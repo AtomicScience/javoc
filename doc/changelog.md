@@ -13,7 +13,7 @@ It implements some simple parts of class loading
   - [ ] Constant pool reading
 ### Tools
 - [ ] **Added new tool**
-  - [ ] Class decompiler (javocd)
+  - [ ] Class decompiler (javocp)
     - [ ] View versions and constants from the pool
 ### Tools
 - [ ] Documentation framework *(.md files structure, etc.)*
