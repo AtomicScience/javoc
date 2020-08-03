@@ -1,5 +1,5 @@
 # Changelogs and to-do lists
-## Version 0.1 - "Debut Update"
+## Version 0.1
 This is a very first version of the project.
 
 It implements some simple parts of class loading
