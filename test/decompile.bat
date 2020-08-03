@@ -1,0 +1,1 @@
+"%JAVA_HOME%/bin/javap" -c -v %1
