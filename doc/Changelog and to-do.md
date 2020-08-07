@@ -4,21 +4,20 @@ This is a very first version of the project.
 
 It implements some simple parts of class loading
 ### Generic features
-- [ ] **Debug library**
-  - [ ] Simple `print` function for debugging
+- [x] **Debug library**
+  - [x] Simple `print` function for debugging
 ### Class loading:
-- [ ] **Class loading module structure**
-  - [ ] Class loader file (classLoader.lua) - *responsible for all the class* *loading procedure logic in the bootstrap class loader*
-- [ ] **Implemented class loading features**
-  - [ ] Magic value
-  - [ ] Versions *(Major and Minor)*
-  - [ ] Constant pool reading
+- [x] **Class loading module structure**
+  - [x] Class loader file (classLoader.lua) - *responsible for all the class* *loading procedure logic in the bootstrap class loader*
+- [x] **Implemented class loading features**
+  - [x] Magic value
+  - [x] Versions *(Major and Minor)*
 ### Tools
-- [ ] **Added new tool**
-  - [ ] Class decompiler (javocp)
-    - [ ] View versions and constants from the pool
+- [x] **Added new tool**
+  - [x] Class decompiler (javocp)
+    - [x] View versions
 ### Documentation
-- [ ] Documentation framework *(.md files structure, etc.)*
+- [x] Documentation framework *(.md files structure, etc.)*
 - [ ] Project's motivation and abstract
 - [ ] Class Loading algorithm:
   - [ ] Basics of the class file structure
