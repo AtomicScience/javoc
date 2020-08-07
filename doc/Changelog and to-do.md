@@ -8,8 +8,7 @@ It implements some simple parts of class loading
   - [ ] Simple `print` function for debugging
 ### Class loading:
 - [ ] **Class loading module structure**
-  - [ ] Class loader file (classLoader.lua) - *responsible for all the class loading procedure logic in the bootstrap class loader*
-the information about class loaded*
+  - [ ] Class loader file (classLoader.lua) - *responsible for all the class* *loading procedure logic in the bootstrap class loader*
 - [ ] **Implemented class loading features**
   - [ ] Magic value
   - [ ] Versions *(Major and Minor)*
