@@ -32,4 +32,9 @@ function moduleLoader.require(path, ignoreCache)
 	end
 end
 
+-- Clears the loaded modules cache
+function moduleLoader.clearCache()
+	moduleLoader.loaded = {}
+end
+
 return moduleLoader
