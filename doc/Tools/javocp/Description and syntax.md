@@ -10,7 +10,17 @@ javocp [ options ] *class*
 
 **javocp** is a stripped down version of [javap](https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javap.html) command
 
-## Options
-**--help**, **-?** - Prints the help message
+Classes' paths are calculated relative to the root directory of the project
 
-**--verbose**, **-v** - Prints constant pool
+## Options and arguments
+| Argument              | Commentary                |
+| --------------------- | ------------------------- |
+| *class*               | Path to the class to load |
+| **--help**, **-?**    | Prints the help message   |
+| **--verbose**, **-v** | Prints constant pool      |
+| **--debug**, **-d**   | Enables debug mode        |
+
+## Example usage
+``` cmd
+JavOC/bin> javocd -v -d test/HelloWord.class
+```
