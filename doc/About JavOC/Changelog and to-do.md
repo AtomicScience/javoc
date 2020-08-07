@@ -18,7 +18,7 @@ It implements some simple parts of class loading
     - [x] View versions
 ### Documentation
 - [x] Documentation framework *(.md files structure, etc.)*
-- [ ] Project's motivation and abstract
-- [ ] Class Loading algorithm:
-  - [ ] Basics of the class file structure
-  - [ ] Steps for class loading 
+- [x] Project's motivation and abstract
+- [x] Class Loading algorithm:
+  - [x] Basics of the class file structure
+  - [x] Steps for class loading 
