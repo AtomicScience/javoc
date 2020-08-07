@@ -26,4 +26,12 @@ Looks complicated... But here is the pretty diagram, that explains everything!
 
 ![image](/doc/Diagrams/Class%20File%20Structure.drawio.svg)
 
-Still complicated... 
+Still complicated... But at least it is more clear now!
+
+Let's start describing each field, one by one:
+
+<details>
+<summary>Magic Value</summary>
+
+Each `.class` value starts with special 'magic value'
+</details>
