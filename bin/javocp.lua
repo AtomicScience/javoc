@@ -9,6 +9,7 @@ if not package.path:find("jre") then
 end
 
 local shell        = require("shell")
+local filesystem   = require("filesystem")
 local moduleLoader = require("moduleLoader")
 moduleLoader.clearCache()
 local classLoader  = moduleLoader.require("class/classLoader")
@@ -49,4 +50,21 @@ end
 -- Name of the class to load
 local classToLoad = args[1]
 
-local class = classLoader.loadClassFromFile(args[1], "")
+local class = classLoader.loadClassFromFile(classToLoad, "")
+
+-- If name of the class have been given without extension, we
+-- should add it
+if not classToLoad:find(".class") then
+	classToLoad = classToLoad .. ".class"
+end
+
+-- filesystem.canonical() strips all the ".." and "."
+local fullPathToClass = filesystem.canonical(shell.getWorkingDirectory() ..  "/../" .. classToLoad)
+local fileEditTime = os.date("%b %d, %Y", filesystem.lastModified(fullPathToClass))
+local fileSize = filesystem.size(fullPathToClass)
+
+print("Classfile " .. fullPathToClass)
+print("  Last modified: " .. fileEditTime .. "; size " .. fileSize .. " bytes")
+print("class #ClassName") -- TODO: Name
+print("  minor version: " .. class.version.minor)
+print("  major version: " .. class.version.major)
