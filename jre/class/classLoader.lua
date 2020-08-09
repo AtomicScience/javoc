@@ -41,23 +41,19 @@ function classLoader.loadClassFromStream(stream)
 	local class = {}
 
 	-- Step 1 - loading 'magic value'
-	debug.print("Loading 'magic value' (0xCAFEBABE)")
-	
 	if not classLoader.checkMagicValue(stream) then
 		debug.print("Incorrect 'magic value'")
 		error("Class loading aborted: incorrect 'magic value'")
 	end
 
-	debug.print("Correct 'magic value' is valid")
+	debug.print("Correct 'magic value' is loaded")
 
 	-- Step 2 - Loading versions (major and minor)
-	debug.print("Loading versions (major and minor)")
-
 	class.version = classLoader.loadVersion(stream)
 
 	debug.print("Versions loaded successfully")
 
-	--
+	-- Step N - PROFIT!!!
 	debug.print("Class loaded successfully") -- TODO: Name
 
 	return class
@@ -67,6 +63,7 @@ end
 ---@param stream file_stream    @ Stream with class file
 ---@return boolean valid        @ Determines if magic value is correct or not
 function classLoader.checkMagicValue(stream)
+	debug.print("Loading 'magic value' (0xCAFEBABE)")
 	local magicValue = bu.readU4(stream)
 
 	return (magicValue == 0xCAFEBABE)
@@ -74,13 +71,16 @@ end
 
 ---Loads major and minor versions and saves them to the table
 ---@param stream file_stream    @ Stream with class file
----@return table valid          @ Table with major and minor versions stored
+---@return table versions       @ Table with major and minor versions stored
 function classLoader.loadVersion(stream)
+	debug.print("Loading versions (major and minor)")
 	local version = {}
 
 	version.minor = bu.readU2(stream)
 	version.major = bu.readU2(stream)
 
+	debug.print("Versions loaded successfully!")
+	debug.print("Major - " .. version.major .. "; Minor - " .. version.minor)
 	return version
 end
 
