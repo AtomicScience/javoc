@@ -4,10 +4,9 @@
 ]]
 local moduleLoader = require("moduleLoader")
 
-local debug = moduleLoader.require("debug/javaDebug")
--- BU stands for 'Binary Utilities'
-local bu    = moduleLoader.require("utilities/binaryStream")
-local cpHandler = moduleLoader.require("class/handlers/constantPool")
+local debug        = moduleLoader.require("debug/javaDebug")
+local bu           = moduleLoader.require("utilities/binaryStream")
+local cpHandler    = moduleLoader.require("class/handlers/constantPool")
 
 local classLoader = {}
 
@@ -59,6 +58,9 @@ function classLoader.loadClassFromStream(stream)
 
 	-- Step 4 - Loading access flags
 	class.accessFlags = classLoader.loadAccessFlags(stream)
+
+	-- Step 5 - Loading this and super class names
+	class.thisClass, class.superClass = classLoader.loadClassNames(stream, class.constantPool)
 
 	-- Step N - PROFIT!!!
 	debug.print("Class loaded successfully") -- TODO: Name
@@ -178,6 +180,39 @@ function classLoader.loadAccessFlags(stream)
 	debug.print("ACC_ENUM: " .. tostring(accessFlags["ACC_ENUM"]))
 
 	return accessFlags
+end
+
+---Loads class' and superclass' names
+---@param stream file_stream      @ Stream with class file
+---@param constantPool table      @ Stream with class file
+---@return table thisClass        @ Info about this class
+---@return table superClass       @ Info about the super class
+---                                 Syntax: {
+---                                 	index = <index of CONSTANT_Class>
+---                                 	name  = <string with the class name>
+function classLoader.loadClassNames(stream, constantPool)
+	debug.print("Loading this and super class names")
+	local thisClass  = {}
+	local superClass = {}
+
+	thisClass.index  = bu.readU2(stream)
+	superClass.index = bu.readU2(stream)
+
+	-- Both 'thisClassIndex' and 'superClassIndex' point at
+	-- the CONSTANT_Class, which points at the CONSTANT_Utf8,
+	-- which contains the string we want
+	local thisClassConstantClass  = constantPool[thisClass.index]
+	local superClassConstantClass = constantPool[superClass.index]
+
+	local thisClassUTF8  = constantPool[thisClassConstantClass.nameIndex]
+	local superClassUTF8 = constantPool[superClassConstantClass.nameIndex]
+
+	thisClass.name  = thisClassUTF8.value
+	superClass.name = superClassUTF8.value
+
+	debug.print("This class:  #" .. thisClass.index .. " (" .. thisClass.name .. ")")
+	debug.print("Super class: #" .. superClass.index .. " (" .. superClass.name .. ")")
+	return thisClass, superClass
 end
 
 return classLoader
