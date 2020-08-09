@@ -4,7 +4,7 @@
 ]]
 local debug = require("moduleLoader").require("debug/javaDebug")
 -- BU stands for 'Binary Utilities'
-local bu    = require("moduleLoader").require("utilities/binaryStream")
+local bu    = require("moduleLoader").require("utilites/binaryStream")
 
 local classLoader = {}
 
@@ -72,6 +72,11 @@ end
 ---Loads major and minor versions and saves them to the table
 ---@param stream file_stream    @ Stream with class file
 ---@return table versions       @ Table with major and minor versions stored
+---                               Structure:
+---                               {
+---                                 minor = <minor version>,
+---                                 major = <major version>
+---                               }
 function classLoader.loadVersion(stream)
 	debug.print("Loading versions (major and minor)")
 	local version = {}
