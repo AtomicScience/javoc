@@ -57,6 +57,9 @@ function classLoader.loadClassFromStream(stream)
 	-- Step 3 - Loading constant pool
 	class.constantPool = classLoader.loadConstantPool(stream)
 
+	-- Step 4 - Loading access flags
+	class.accessFlags = classLoader.loadAccessFlags(stream)
+
 	-- Step N - PROFIT!!!
 	debug.print("Class loaded successfully") -- TODO: Name
 
@@ -137,6 +140,44 @@ function classLoader.loadConstantPool(stream)
 	end
 
 	return constantPool
+end
+
+---Loads access flags
+---@param stream file_stream      @ Stream with class file
+---@return table accessFlags      @ Access flags of the class
+function classLoader.loadAccessFlags(stream)
+	debug.print("Loading access flags")
+
+	local accessFlags = {}
+	accessFlags.mask = bu.readU2(stream)
+
+	debug.print("Mask: " .. string.format("0x%x", accessFlags.mask))
+
+	accessFlags["ACC_PUBLIC"]     = bu.mask(accessFlags.mask, 0x0001)
+	debug.print("ACC_PUBLIC: " .. tostring(accessFlags["ACC_PUBLIC"]))
+
+	accessFlags["ACC_FINAL"]      = bu.mask(accessFlags.mask, 0x0010)
+	debug.print("ACC_FINAL: " .. tostring(accessFlags["ACC_FINAL"]))
+
+	accessFlags["ACC_SUPER"]      = bu.mask(accessFlags.mask, 0x0020)
+	debug.print("ACC_SUPER: " .. tostring(accessFlags["ACC_SUPER"]))
+
+	accessFlags["ACC_INTERFACE"]  = bu.mask(accessFlags.mask, 0x0200)
+	debug.print("ACC_INTERFACE: " .. tostring(accessFlags["ACC_INTERFACE"]))
+
+	accessFlags["ACC_ABSTRACT"]   = bu.mask(accessFlags.mask, 0x0400)
+	debug.print("ACC_ABSTRACT: " .. tostring(accessFlags["ACC_ABSTRACT"]))
+
+	accessFlags["ACC_SYNTHETIC"]  = bu.mask(accessFlags.mask, 0x1000)
+	debug.print("ACC_SYNTHETIC: " .. tostring(accessFlags["ACC_SYNTHETIC"]))
+
+	accessFlags["ACC_ANNOTATION"] = bu.mask(accessFlags.mask, 0x2000)
+	debug.print("ACC_ANNOTATION: " .. tostring(accessFlags["ACC_ANNOTATION"]))
+
+	accessFlags["ACC_ENUM"]       = bu.mask(accessFlags.mask, 0x4000)
+	debug.print("ACC_ENUM: " .. tostring(accessFlags["ACC_ENUM"]))
+
+	return accessFlags
 end
 
 return classLoader

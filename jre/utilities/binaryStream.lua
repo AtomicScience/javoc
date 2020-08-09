@@ -29,4 +29,12 @@ function binaryStream.readU4(stream)
 	return bit32.lshift(binaryStream.readU2(stream), 16) + binaryStream.readU2(stream)
 end
 
+---Checks if bit in maskedValue is 1 under mask
+---@param maskedValue number   @ Value to apply mask to
+---@param mask number          @ Mask to apply
+---@return boolean isSet       @ If bit under mask or not
+function binaryStream.mask(maskedValue, mask)
+	return (bit32.band(maskedValue, mask) == mask)
+end
+
 return binaryStream

@@ -4,6 +4,7 @@ In this pre-release I plan to implement readings of the constant pool and expand
 ### Class loading:
 - [ ] **Implemented class loading features**
   - [x] Constant pool readings
+  - [x] Access flags
   - [ ] Current and super classes names
 ### Tools
 - [ ] Class decompiler (javocp)
