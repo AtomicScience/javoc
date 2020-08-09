@@ -4,7 +4,7 @@
 ]]
 local debug = require("moduleLoader").require("debug/javaDebug")
 -- BU stands for 'Binary Utilities'
-local bu    = require("moduleLoader").require("class/binaryUtils")
+local bu    = require("moduleLoader").require("utilites/binaryStream")
 
 local classLoader = {}
 
