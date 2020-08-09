@@ -1,5 +1,5 @@
 --[[ Java Class Decompiler
-	 Version: 0.1
+	 Since: 0.1
 	 Part of the JavOC project
 ]]
 -- Adding path to our JVM components to the package loader.

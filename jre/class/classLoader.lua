@@ -1,5 +1,5 @@
 --[[ Java Class Loader (Bootstrap)
-	 Version: 0.1
+	 Since: 0.1
 	 Part of the JavOC project
 ]]
 local debug = require("moduleLoader").require("debug/javaDebug")

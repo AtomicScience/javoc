@@ -1,5 +1,5 @@
 --[[ Library for debug functions
-	 Version: 0.1
+	 Since: 0.1
 	 Part of the JavOC project
 ]]
 

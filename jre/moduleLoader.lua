@@ -1,5 +1,5 @@
 --[[ JVM module loader
-	 Version: 0.1
+	 Since: 0.1
 	 Part of the JavOC project
 ]]
 
