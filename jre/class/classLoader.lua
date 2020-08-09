@@ -2,9 +2,12 @@
 	 Since: 0.1
 	 Part of the JavOC project
 ]]
-local debug = require("moduleLoader").require("debug/javaDebug")
+local moduleLoader = require("moduleLoader")
+
+local debug = moduleLoader.require("debug/javaDebug")
 -- BU stands for 'Binary Utilities'
-local bu    = require("moduleLoader").require("utilites/binaryStream")
+local bu    = moduleLoader.require("utilities/binaryStream")
+local cpHandler = moduleLoader.require("class/handlers/constantPool")
 
 local classLoader = {}
 
@@ -51,7 +54,8 @@ function classLoader.loadClassFromStream(stream)
 	-- Step 2 - Loading versions (major and minor)
 	class.version = classLoader.loadVersion(stream)
 
-	debug.print("Versions loaded successfully")
+	-- Step 3 - Loading constant pool
+	class.constantPool = classLoader.loadConstantPool(stream)
 
 	-- Step N - PROFIT!!!
 	debug.print("Class loaded successfully") -- TODO: Name
@@ -87,6 +91,52 @@ function classLoader.loadVersion(stream)
 	debug.print("Versions loaded successfully!")
 	debug.print("Major - " .. version.major .. "; Minor - " .. version.minor)
 	return version
+end
+
+---Loads constant pool
+---@param stream file_stream    @ Stream with class file
+---@return table constantPool   @ Table with constant pool values
+function classLoader.loadConstantPool(stream)
+	debug.print("Loading constant pool")
+
+	local constantPool = {}
+	constantPool.size = bu.readU2(stream)
+	debug.print("Size of the constant pool - " .. constantPool.size)
+
+	local currentIndex = 1
+
+	debug.print("Constants in the pool:")
+	while currentIndex < constantPool.size do
+		local tag = bu.readU1(stream)
+		-- Since Double and Long constants occuppy two indexes in the
+		-- constant pool, they will return not one constant, but two:
+		-- the actual one and the 'dummy'. "Normal" constants will
+		-- set 'dummyConstant' field to nil
+		--
+		-- Also, this line utilizes handler for the constant pool
+		-- Refer to 'doc/About JavOC/Strcture/Handlers' for more info
+		debug.print("Constant #" .. currentIndex .. " with tag " .. tag)
+		local constant, dummyConstant = cpHandler[tag](stream)
+
+		if dummyConstant then
+			-- If dummyConstant is NOT nil, it means that 
+			-- the 'fat' constant was loaded.
+			-- So, we should increment currentIndex on 2 and insert
+			-- both constant and dummyConstant into table
+			table.insert(constantPool, constant)
+			table.insert(constantPool, dummyConstant)
+
+			currentIndex = currentIndex + 2
+		else
+			-- If dummyConstant is nil, it means that
+			-- the 'normal' constant was loaded.
+			table.insert(constantPool, constant)
+
+			currentIndex = currentIndex + 1
+		end
+	end
+
+	return constantPool
 end
 
 return classLoader
