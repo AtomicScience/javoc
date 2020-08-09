@@ -8,12 +8,14 @@ if not package.path:find("jre") then
 	package.path = package.path .. ";../jre/?.lua"
 end
 
-local shell        = require("shell")
-local filesystem   = require("filesystem")
-local moduleLoader = require("moduleLoader")
+local shell         = require("shell")
+local filesystem    = require("filesystem")
+local moduleLoader  = require("moduleLoader")
 moduleLoader.clearCache()
-local classLoader  = moduleLoader.require("class/classLoader")
-local debug        = moduleLoader.require("debug/javaDebug")
+
+local classLoader   = moduleLoader.require("class/classLoader")
+local debug         = moduleLoader.require("debug/javaDebug")
+local accessFlagsToString = moduleLoader.require("utilities/serialization/accessFlags")
 
 -- The flag to indicate if output should be verbose or not
 local verbose = false
@@ -60,11 +62,22 @@ end
 
 -- filesystem.canonical() strips all the ".." and "."
 local fullPathToClass = filesystem.canonical(shell.getWorkingDirectory() ..  "/../" .. classToLoad)
+
 local fileEditTime = os.date("%b %d, %Y", filesystem.lastModified(fullPathToClass))
+
 local fileSize = filesystem.size(fullPathToClass)
+
+local extends = ""
+
+if class.superClass.name ~= "java/lang/Object" then
+	extends = " extends " .. class.superClass.name
+end
 
 print("Classfile " .. fullPathToClass)
 print("  Last modified: " .. fileEditTime .. "; size " .. fileSize .. " bytes")
-print("class #ClassName") -- TODO: Name
+print("class " .. class.thisClass.name .. extends)
 print("  minor version: " .. class.version.minor)
 print("  major version: " .. class.version.major)
+print("  flags: " .. accessFlagsToString.toString(class.accessFlags))
+print("  this_class: #" .. class.thisClass.index)
+print("  super_class: #" .. class.superClass.index)

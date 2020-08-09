@@ -2,13 +2,16 @@
 ## Version 0.2
 In this pre-release I plan to implement readings of the constant pool and expand documentation 
 ### Class loading:
-- [ ] **Implemented class loading features**
+- [x] **Implemented class loading features**
   - [x] Constant pool readings
   - [x] Access flags
-  - [ ] Current and super classes names
+  - [x] Current and super classes names
 ### Tools
 - [ ] Class decompiler (javocp)
-  - [ ] Constant pool and class name
+  - [x] Class names *(this and super)*
+  - [x] Class indexes *(this and super)*
+  - [x] Access flags
+  - [ ] Constant pool
 ### Documentation
 - [ ] Class Loading algorithm:
   - [ ] Constant pool loading procedure
