@@ -28,17 +28,17 @@ local constantPool = setmetatable({}, metatable)
 constantPool[1] = function(stream)
 	local constant = {}
 	constant.type  = "Utf8"
-	constant.string = ""
+	constant.value = ""
 
 	local length = bu.readU2(stream)
 
 	for i = 1, length do
-		constant.string = constant.string .. string.char(bu.readU1(stream))
+		constant.value = constant.value .. string.char(bu.readU1(stream))
 	end
 
 	debug.print("Utf8 constant.")
 	debug.print("Lenght - " .. length .. " bytes")
-	debug.print("Value  - " .. constant.string)
+	debug.print("Value  - " .. constant.value)
 
 	return constant
 end
