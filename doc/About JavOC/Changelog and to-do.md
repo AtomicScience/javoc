@@ -3,7 +3,7 @@
 In this pre-release I plan to implement readings of the constant pool and expand documentation 
 ### Class loading:
 - [ ] **Implemented class loading features**
-  - [ ] Constant pool readings
+  - [x] Constant pool readings
   - [ ] Current and super classes names
 ### Tools
 - [ ] Class decompiler (javocp)
