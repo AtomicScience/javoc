@@ -62,13 +62,9 @@ end
 
 -- filesystem.canonical() strips all the ".." and "."
 local fullPathToClass = filesystem.canonical(shell.getWorkingDirectory() ..  "/../" .. classToLoad)
-
 local fileEditTime = os.date("%b %d, %Y", filesystem.lastModified(fullPathToClass))
-
 local fileSize = filesystem.size(fullPathToClass)
-
 local extends = ""
-
 if class.superClass.name ~= "java/lang/Object" then
 	extends = " extends " .. class.superClass.name
 end

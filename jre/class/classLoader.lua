@@ -190,6 +190,7 @@ end
 ---                                 Syntax: {
 ---                                 	index = <index of CONSTANT_Class>
 ---                                 	name  = <string with the class name>
+---                                 }
 function classLoader.loadClassNames(stream, constantPool)
 	debug.print("Loading this and super class names")
 	local thisClass  = {}
