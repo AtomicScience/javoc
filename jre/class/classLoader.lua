@@ -63,7 +63,7 @@ function classLoader.loadClassFromStream(stream)
 	class.thisClass, class.superClass = classLoader.loadClassNames(stream, class.constantPool)
 
 	-- Step N - PROFIT!!!
-	debug.print("Class loaded successfully") -- TODO: Name
+	debug.print("Class " .. class.thisClass.name .. " loaded successfully")
 
 	return class
 end
