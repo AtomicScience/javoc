@@ -1,2 +1,4 @@
 .vscode
 bin/log.log
+.shrc
+file.txt
