@@ -22,7 +22,7 @@ function classLoader.loadClassFromFile(file, classpath)
 	end
 
 	-- Declaring an absolute path to the file
-	local filePath = "../" .. classpath .. file
+	local filePath = "" .. classpath .. file
 
 	debug.print("Attempting to load class on path of " .. filePath)
 	local stream = io.open(filePath, "rb")

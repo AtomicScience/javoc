@@ -22,7 +22,7 @@ function moduleLoader.require(path, ignoreCache)
 		return moduleLoader.loaded[path]
 	end
 
-	local loadedModule = dofile("../jre/" .. path .. ".lua")
+	local loadedModule = dofile("jre/" .. path .. ".lua")
 
 	if loadedModule then
 		moduleLoader.loaded[path] = loadedModule

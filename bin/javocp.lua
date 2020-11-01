@@ -5,7 +5,7 @@
 -- Adding path to our JVM components to the package loader.
 -- However, before doing so, we should check if we'd already added it
 if not package.path:find("jre") then
-	package.path = package.path .. ";../jre/?.lua"
+	package.path = package.path .. ";jre/?.lua"
 end
 
 local shell         = require("shell")
