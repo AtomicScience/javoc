@@ -15,20 +15,12 @@ moduleLoader.clearCache()
 
 local classLoader   = moduleLoader.require("class/classLoader")
 local debug         = moduleLoader.require("debug/javaDebug")
-local accessFlagsToString = moduleLoader.require("utilities/serialization/accessFlags")
+
+local classInfoPrinter     = moduleLoader.require("bin/javocp/output/classInfoPrinter")
+local helpMessagePrinter   = moduleLoader.require("bin/javocp/output/helpMessagePrinter")
 
 -- The flag to indicate if output should be verbose or not
 local verbose = false
-
-local function printHelpMessage()
-	print("javocp - Java class Disassembler (v 0.1) ")
-	print("Usage: javocp [options] <class>          ")
-	print("Possible options:                        ")
-	print("  --help, -?         Print this reference")
-	print("  --verbose, -v      Verbose information ")
-	print("                     (constant pool)     ")
-	print("  --debug, -d        Enables debug mode  ")
-end
 
 -- Parsing arguments passed to the program via "shell" API
 -- Refer to (https://ocdoc.cil.li/api:shell) for more information
@@ -37,7 +29,7 @@ local args, ops = shell.parse(...)
 -- If special options are provided or no class is given,
 -- we should print the help message
 if ops["?"] or ops["help"] or (#args == 0) then
-	printHelpMessage()
+	helpMessagePrinter.printHelpMessage()
 	return
 end
 
@@ -51,29 +43,8 @@ end
 
 -- Name of the class to load
 local classToLoad = args[1]
-
 local class = classLoader.loadClassFromFile(classToLoad, "")
 
--- If name of the class have been given without extension, we
--- should add it
-if not classToLoad:find(".class") then
-	classToLoad = classToLoad .. ".class"
-end
+local fullPathToClass = filesystem.canonical(shell.getWorkingDirectory() .. "/" .. classToLoad)
 
--- filesystem.canonical() strips all the ".." and "."
-local fullPathToClass = filesystem.canonical(shell.getWorkingDirectory() ..  "/../" .. classToLoad)
-local fileEditTime = os.date("%b %d, %Y", filesystem.lastModified(fullPathToClass))
-local fileSize = filesystem.size(fullPathToClass)
-local extends = ""
-if class.superClass.name ~= "java/lang/Object" then
-	extends = " extends " .. class.superClass.name
-end
-
-print("Classfile " .. fullPathToClass)
-print("  Last modified: " .. fileEditTime .. "; size " .. fileSize .. " bytes")
-print("class " .. class.thisClass.name .. extends)
-print("  minor version: " .. class.version.minor)
-print("  major version: " .. class.version.major)
-print("  flags: " .. accessFlagsToString.toString(class.accessFlags))
-print("  this_class: #" .. class.thisClass.index)
-print("  super_class: #" .. class.superClass.index)
+classInfoPrinter.printInfo(class, fullPathToClass)
