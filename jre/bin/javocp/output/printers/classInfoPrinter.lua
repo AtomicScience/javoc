@@ -5,20 +5,17 @@
 local classInfoPrinter = {}
 
 local moduleLoader = require("moduleLoader")
-local shell         = require("shell")
 local filesystem    = require("filesystem")
-local ser           = require("serialization").serialize
 
 local accessFlagsToString   = moduleLoader.require("utilities/serialization/accessFlags")
-local constantToString = moduleLoader.require("utilities/serialization/constantPool")
 
 ---Prints different information about class
 ---@param class table              @ Loaded class
 ---@param fullPathToClass string   @ Absolute path of the class file
-function classInfoPrinter.printInfo(class, fullPathToClass)
+function classInfoPrinter.printClassInfo(class, fullPathToClass)
     local fileEditTime = os.date("%b %d, %Y", filesystem.lastModified(fullPathToClass))
     local fileSize = filesystem.size(fullPathToClass)
-    
+
     -- 'extends' signature is ommited when object is inherited directly from java/lang/Object
     local extends = ""
     if class.superClass.name ~= "java/lang/Object" then

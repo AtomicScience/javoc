@@ -16,8 +16,7 @@ moduleLoader.clearCache()
 local classLoader   = moduleLoader.require("class/classLoader")
 local debug         = moduleLoader.require("debug/javaDebug")
 
-local classInfoPrinter     = moduleLoader.require("bin/javocp/output/classInfoPrinter")
-local helpMessagePrinter   = moduleLoader.require("bin/javocp/output/helpMessagePrinter")
+local printer     = moduleLoader.require("bin/javocp/output/printer")
 
 -- The flag to indicate if output should be verbose or not
 local verbose = false
@@ -29,7 +28,7 @@ local args, ops = shell.parse(...)
 -- If special options are provided or no class is given,
 -- we should print the help message
 if ops["?"] or ops["help"] or (#args == 0) then
-	helpMessagePrinter.printHelpMessage()
+	printer.printHelpMessage()
 	return
 end
 
@@ -47,4 +46,8 @@ local class = classLoader.loadClassFromFile(classToLoad, "")
 
 local fullPathToClass = filesystem.canonical(shell.getWorkingDirectory() .. "/" .. classToLoad)
 
-classInfoPrinter.printInfo(class, fullPathToClass)
+printer.printClassInfo(class, fullPathToClass)
+
+if verbose then
+	printer.printConstantPool(class.constantPool)
+end

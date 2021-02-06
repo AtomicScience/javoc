@@ -4,8 +4,8 @@
 ]]
 local helpMessagePrinter = {}
 
----Prints a help message for a javocp
----Why would I even make move it into separate file?
+---Prints a help message for a javocp, that's all
+---Why would I ever move it into separate printer?
 function helpMessagePrinter.printHelpMessage()
     print("javocp - Java class Disassembler (v 0.1) ")
 	print("Usage: javocp [options] <class>          ")
