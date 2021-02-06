@@ -15,7 +15,7 @@ local classLoader = {}
 ---@param classpath string      @ Absolute path to the classes to load
 ---@return table class          @ Loaded and parsed class file
 function classLoader.loadClassFromFile(file, classpath)
-	-- If name of the class have been given without extension, we
+	-- If name of the class has been given without extension, we
 	-- should add it
 	if not file:find(".class") then
 		file = file .. ".class"

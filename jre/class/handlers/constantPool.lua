@@ -11,6 +11,7 @@ local debug = moduleLoader.require("debug/javaDebug")
 
 local bu    = moduleLoader.require("utilities/binaryStream")
 
+-- TODO: Move empty handler creation to a separate file
 local function tagNotFound(_, tag)
 	error("Invalid tag for constant pool entry (" .. tag .. ")")
 end
