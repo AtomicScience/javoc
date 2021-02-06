@@ -38,4 +38,4 @@ Let's have a look at the typical constant!
 | 3    | Spacing after type    | Calculated as `20 - 'typeLength'`    |
 | 4    | Content               |                                      |
 | 5    | Spacing after content | Calculated as `16 - 'contentLength'` |
-| 6    | Commentary            |                                      |
+| 6    | Commentary            | Starts with                          |
