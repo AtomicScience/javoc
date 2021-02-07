@@ -24,7 +24,7 @@ According to the [official JVM Specifications](https://docs.oracle.com/javase/sp
 
 Looks complicated... But here is the pretty diagram, that explains everything!
 
-![image](../Diagrams/Class%20Loading%20and%20structure/Class%20File%20Structure.drawio.svg)
+<img src="../Diagrams/Class%20Loading%20and%20structure/Class%20File%20Structure.drawio.svg" alt="drawing" width="100%"/>
 
 Still complicated, of course. But at least it is much more convenient to work with, right?
 ## Detailed fields description
