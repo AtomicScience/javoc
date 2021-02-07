@@ -24,14 +24,15 @@ According to the [official JVM Specifications](https://docs.oracle.com/javase/sp
 
 Looks complicated... But here is the pretty diagram, that explains everything!
 
-![image](/doc/Diagrams/Class%20File%20Structure.drawio.svg)
+![image](../Diagrams/Class%20Loading%20and%20structure/Class%20File%20Structure.drawio.svg)
 
-Still complicated... But at least it is more clear now!
-
+Still complicated, of course. But at least it is much more convenient to work with, right?
+## Detailed fields description
 Let's start describing each field, one by one:
 
-<details>
-<summary>Magic Value</summary>
+<p>
+<img align="right" src="../Diagrams/Class%20Loading%20and%20structure/Magic%20Value.png" alt="drawing" width="100"/>
 
-Each `.class` value starts with special 'magic value'
-</details>
+### Magic value
+Each `.class` value starts with special 'magic value' - a sequence of 4 bytes, that all Java class start with. It's value is 0xCAFEBABE 
+</p>
