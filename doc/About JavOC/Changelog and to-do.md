@@ -13,13 +13,10 @@ In this pre-release I plan to implement readings of the constant pool and expand
   - [x] Access flags
   - [x] Constant pool
 ### Documentation
-- [ ] Class Loading algorithm:
-  - [ ] Constant pool loading procedure
-  - [ ] Descriptors
-- [ ] Expand "Class File Format"
-  - [ ] 'Magic Value'
-  - [ ] Versions
-  - [ ] Constant pool
+- [x] Expand "Class File Format"
+  - [x] 'Magic Value'
+  - [x] Versions
+  - [x] Constant pool
 - [ ] Expand "Class structure by example"
   - [ ] 'Magic value'
   - [ ] Versions
