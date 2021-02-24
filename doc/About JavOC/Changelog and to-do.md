@@ -17,10 +17,6 @@ In this pre-release I plan to implement readings of the constant pool and expand
   - [x] 'Magic Value'
   - [x] Versions
   - [x] Constant pool
-- [ ] Expand "Class structure by example"
-  - [ ] 'Magic value'
-  - [ ] Versions
-  - [ ] Constant pool
 
 ## Version 0.1 - Released 07.08.2020
 This is a very first version of the project.
