@@ -44,7 +44,7 @@ Each `.class` value starts with special 'magic value' - a sequence of 4 bytes, t
 
 ### Minor and major versions
 <img align="right" src="../Diagrams/Class%20Loading%20and%20structure/Versions.png" alt="drawing" width="200"/>
-Each class was compiled to be used with a specific version of Java. It was quite complex back in old versions of Java, but today everything is pretty straightforward - JVM can run classes of its version and classes with *older* versions. In other words, JVMs are **backwards compatible**
+Each class was compiled to be used with a specific version of Java. It was quite complex back in old versions of Java, but today everything is pretty straightforward - JVM can run classes of its version and classes with <em>older</em> versions. In other words, JVMs are <b>backwards compatible</b>
 
 To store version of the Java that compiled the file, Major and Minor fields exist
 

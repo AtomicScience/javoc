@@ -1,6 +1,6 @@
 # Constant pool entries serialization
 
-## Structrue of serialized entry
+## Structure of serialized entry
 For debug purposes, it is very convenient to have a way to represent a constant pool entry in a *human-readable form*.
 
 However, since most of entries contain links to other entries, that link to other constants as well... It becomes tricker to handle and represent.
