@@ -2,11 +2,10 @@
 	Since: 0.2
 	Part of the JavOC project
 ]]
-local helpMessagePrinter = {}
 
 ---Prints a help message for a javocp, that's all
 ---Why would I ever move it into separate printer?
-function helpMessagePrinter.printHelpMessage()
+local function printHelpMessage()
     print("javocp - Java class Disassembler (v 0.1) ")
 	print("Usage: javocp [options] <class>          ")
 	print("Possible options:                        ")
@@ -16,4 +15,4 @@ function helpMessagePrinter.printHelpMessage()
 	print("  --debug, -d        Enables debug mode  ")
 end
 
-return helpMessagePrinter
+return printHelpMessage

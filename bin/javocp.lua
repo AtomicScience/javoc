@@ -10,13 +10,7 @@ end
 
 local shell         = require("shell")
 local filesystem    = require("filesystem")
-local moduleLoader  = require("moduleLoader")
-moduleLoader.clearCache()
-
-local classLoader   = moduleLoader.require("class/classLoader")
-local debug         = moduleLoader.require("debug/javaDebug")
-
-local printer     = moduleLoader.require("bin/javocp/output/printer")
+local jre         = require("umfal").javoc.jre
 
 -- The flag to indicate if output should be verbose or not
 local verbose = false
@@ -28,7 +22,7 @@ local args, ops = shell.parse(...)
 -- If special options are provided or no class is given,
 -- we should print the help message
 if ops["?"] or ops["help"] or (#args == 0) then
-	printer.printHelpMessage()
+	jre.bin.javocp.output.printHelpMessage()
 	return
 end
 
@@ -37,17 +31,17 @@ if ops["v"] or ops["verbose"] then
 end
 
 if ops["d"] or ops["debug"] then
-	debug.debugEnabled = true
+	jre.debug.debugEnabled = true
 end
 
 -- Name of the class to load
 local classToLoad = args[1]
-local class = classLoader.loadClassFromFile(classToLoad, "")
+local class = jre.class.classLoader.loadClassFromFile(classToLoad, "")
 
 local fullPathToClass = filesystem.canonical(shell.getWorkingDirectory() .. "/" .. classToLoad)
 
-printer.printClassInfo(class, fullPathToClass)
+jre.bin.javocp.output.printClassInfo(class, fullPathToClass)
 
 if verbose then
-	printer.printConstantPool(class.constantPool)
+	jre.bin.javocp.output.printConstantPool(class.constantPool)
 end

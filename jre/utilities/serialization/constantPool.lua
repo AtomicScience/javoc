@@ -4,8 +4,7 @@
 
 	More information: "doc/About JavOC/Structure/Serialization/Constant Pool"
 ]]
-local moduleLoader = require("moduleLoader")
-local handler      = moduleLoader.require("utilities/serialization/handlers/constantPool")
+local jre = require("umfal").javoc.jre
 
 local serialization = {}
 
@@ -24,7 +23,7 @@ function serialization.toString(constantPool, index)
 	local constant = constantPool[index]
 	local type = constant.type
 
-	local value, comment = handler[type](constantPool, index)
+	local value, comment = jre.utilities.serialization.handlers.constantPool[type](constantPool, index)
 
 	return value, comment
 end

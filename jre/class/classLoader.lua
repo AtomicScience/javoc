@@ -2,11 +2,7 @@
 	 Since: 0.1
 	 Part of the JavOC project
 ]]
-local moduleLoader = require("moduleLoader")
-
-local debug        = moduleLoader.require("debug/javaDebug")
-local bu           = moduleLoader.require("utilities/binaryStream")
-local cpHandler    = moduleLoader.require("class/handlers/constantPool")
+local jre         = require("umfal").javoc.jre
 
 local classLoader = {}
 
@@ -24,15 +20,15 @@ function classLoader.loadClassFromFile(file, classpath)
 	-- Declaring an absolute path to the file
 	local filePath = "" .. classpath .. file
 
-	debug.print("Attempting to load class on path of " .. filePath)
+	jre.debug.print("Attempting to load class on path of " .. filePath)
 	local stream = io.open(filePath, "rb")
 
 	if not stream then
-		debug.print("Failed to find the file or open it")
+		jre.debug.print("Failed to find the file or open it")
 		error("Class File not found!")
 	end
 
-	debug.print("File stream created, loading class from it")
+	jre.debug.print("File stream created, loading class from it")
 	return classLoader.loadClassFromStream(stream)
 end
 
@@ -44,11 +40,11 @@ function classLoader.loadClassFromStream(stream)
 
 	-- Step 1 - loading 'magic value'
 	if not classLoader.checkMagicValue(stream) then
-		debug.print("Incorrect 'magic value'")
+		jre.debug.print("Incorrect 'magic value'")
 		error("Class loading aborted: incorrect 'magic value'")
 	end
 
-	debug.print("Correct 'magic value' is loaded")
+	jre.debug.print("Correct 'magic value' is loaded")
 
 	-- Step 2 - Loading versions (major and minor)
 	class.version = classLoader.loadVersion(stream)
@@ -63,7 +59,7 @@ function classLoader.loadClassFromStream(stream)
 	class.thisClass, class.superClass = classLoader.loadClassNames(stream, class.constantPool)
 
 	-- Step N - PROFIT!!!
-	debug.print("Class " .. class.thisClass.name .. " loaded successfully")
+	jre.debug.print("Class " .. class.thisClass.name .. " loaded successfully")
 
 	return class
 end
@@ -72,8 +68,8 @@ end
 ---@param stream file_stream    @ Stream with class file
 ---@return boolean valid        @ Determines if magic value is correct or not
 function classLoader.checkMagicValue(stream)
-	debug.print("Loading 'magic value' (0xCAFEBABE)")
-	local magicValue = bu.readU4(stream)
+	jre.debug.print("Loading 'magic value' (0xCAFEBABE)")
+	local magicValue = jre.utilities.binaryStream.readU4(stream)
 
 	return (magicValue == 0xCAFEBABE)
 end
@@ -87,14 +83,14 @@ end
 ---                                 major = <major version>
 ---                               }
 function classLoader.loadVersion(stream)
-	debug.print("Loading versions (major and minor)")
+	jre.debug.print("Loading versions (major and minor)")
 	local version = {}
 
-	version.minor = bu.readU2(stream)
-	version.major = bu.readU2(stream)
+	version.minor = jre.utilities.binaryStream.readU2(stream)
+	version.major = jre.utilities.binaryStream.readU2(stream)
 
-	debug.print("Versions loaded successfully!")
-	debug.print("Major - " .. version.major .. "; Minor - " .. version.minor)
+	jre.debug.print("Versions loaded successfully!")
+	jre.debug.print("Major - " .. version.major .. "; Minor - " .. version.minor)
 	return version
 end
 
@@ -102,17 +98,17 @@ end
 ---@param stream file_stream    @ Stream with class file
 ---@return table constantPool   @ Table with constant pool values
 function classLoader.loadConstantPool(stream)
-	debug.print("Loading constant pool")
+	jre.debug.print("Loading constant pool")
 
 	local constantPool = {}
-	constantPool.size = bu.readU2(stream)
-	debug.print("Size of the constant pool - " .. constantPool.size)
+	constantPool.size = jre.utilities.binaryStream.readU2(stream)
+	jre.debug.print("Size of the constant pool - " .. constantPool.size)
 
 	local currentIndex = 1
 
-	debug.print("Constants in the pool:")
+	jre.debug.print("Constants in the pool:")
 	while currentIndex < constantPool.size do
-		local tag = bu.readU1(stream)
+		local tag = jre.utilities.binaryStream.readU1(stream)
 		-- Since Double and Long constants occuppy two indexes in the
 		-- constant pool, they will return not one constant, but two:
 		-- the actual one and the 'dummy'. "Normal" constants will
@@ -120,8 +116,8 @@ function classLoader.loadConstantPool(stream)
 		--
 		-- Also, this line utilizes handler for the constant pool
 		-- Refer to 'doc/About JavOC/Strcture/Handlers' for more info
-		debug.print("Constant #" .. currentIndex .. " with tag " .. tag)
-		local constant, dummyConstant = cpHandler[tag](stream)
+		jre.debug.print("Constant #" .. currentIndex .. " with tag " .. tag)
+		local constant, dummyConstant = jre.class.handlers.constantPool[tag](stream)
 
 		if dummyConstant then
 			-- If dummyConstant is NOT nil, it means that 
@@ -148,36 +144,36 @@ end
 ---@param stream file_stream      @ Stream with class file
 ---@return table accessFlags      @ Access flags of the class
 function classLoader.loadAccessFlags(stream)
-	debug.print("Loading access flags")
+	jre.debug.print("Loading access flags")
 
 	local accessFlags = {}
-	accessFlags.mask = bu.readU2(stream)
+	accessFlags.mask = jre.utilities.binaryStream.readU2(stream)
 
-	debug.print("Mask: " .. string.format("0x%x", accessFlags.mask))
+	jre.debug.print("Mask: " .. string.format("0x%x", accessFlags.mask))
 
-	accessFlags["ACC_PUBLIC"]     = bu.mask(accessFlags.mask, 0x0001)
-	debug.print("ACC_PUBLIC: " .. tostring(accessFlags["ACC_PUBLIC"]))
+	accessFlags["ACC_PUBLIC"]     = jre.utilities.binaryStream.mask(accessFlags.mask, 0x0001)
+	jre.debug.print("ACC_PUBLIC: " .. tostring(accessFlags["ACC_PUBLIC"]))
 
-	accessFlags["ACC_FINAL"]      = bu.mask(accessFlags.mask, 0x0010)
-	debug.print("ACC_FINAL: " .. tostring(accessFlags["ACC_FINAL"]))
+	accessFlags["ACC_FINAL"]      = jre.utilities.binaryStream.mask(accessFlags.mask, 0x0010)
+	jre.debug.print("ACC_FINAL: " .. tostring(accessFlags["ACC_FINAL"]))
 
-	accessFlags["ACC_SUPER"]      = bu.mask(accessFlags.mask, 0x0020)
-	debug.print("ACC_SUPER: " .. tostring(accessFlags["ACC_SUPER"]))
+	accessFlags["ACC_SUPER"]      = jre.utilities.binaryStream.mask(accessFlags.mask, 0x0020)
+	jre.debug.print("ACC_SUPER: " .. tostring(accessFlags["ACC_SUPER"]))
 
-	accessFlags["ACC_INTERFACE"]  = bu.mask(accessFlags.mask, 0x0200)
-	debug.print("ACC_INTERFACE: " .. tostring(accessFlags["ACC_INTERFACE"]))
+	accessFlags["ACC_INTERFACE"]  = jre.utilities.binaryStream.mask(accessFlags.mask, 0x0200)
+	jre.debug.print("ACC_INTERFACE: " .. tostring(accessFlags["ACC_INTERFACE"]))
 
-	accessFlags["ACC_ABSTRACT"]   = bu.mask(accessFlags.mask, 0x0400)
-	debug.print("ACC_ABSTRACT: " .. tostring(accessFlags["ACC_ABSTRACT"]))
+	accessFlags["ACC_ABSTRACT"]   = jre.utilities.binaryStream.mask(accessFlags.mask, 0x0400)
+	jre.debug.print("ACC_ABSTRACT: " .. tostring(accessFlags["ACC_ABSTRACT"]))
 
-	accessFlags["ACC_SYNTHETIC"]  = bu.mask(accessFlags.mask, 0x1000)
-	debug.print("ACC_SYNTHETIC: " .. tostring(accessFlags["ACC_SYNTHETIC"]))
+	accessFlags["ACC_SYNTHETIC"]  = jre.utilities.binaryStream.mask(accessFlags.mask, 0x1000)
+	jre.debug.print("ACC_SYNTHETIC: " .. tostring(accessFlags["ACC_SYNTHETIC"]))
 
-	accessFlags["ACC_ANNOTATION"] = bu.mask(accessFlags.mask, 0x2000)
-	debug.print("ACC_ANNOTATION: " .. tostring(accessFlags["ACC_ANNOTATION"]))
+	accessFlags["ACC_ANNOTATION"] = jre.utilities.binaryStream.mask(accessFlags.mask, 0x2000)
+	jre.debug.print("ACC_ANNOTATION: " .. tostring(accessFlags["ACC_ANNOTATION"]))
 
-	accessFlags["ACC_ENUM"]       = bu.mask(accessFlags.mask, 0x4000)
-	debug.print("ACC_ENUM: " .. tostring(accessFlags["ACC_ENUM"]))
+	accessFlags["ACC_ENUM"]       = jre.utilities.binaryStream.mask(accessFlags.mask, 0x4000)
+	jre.debug.print("ACC_ENUM: " .. tostring(accessFlags["ACC_ENUM"]))
 
 	return accessFlags
 end
@@ -192,12 +188,12 @@ end
 ---                                 	name  = <string with the class name>
 ---                                 }
 function classLoader.loadClassNames(stream, constantPool)
-	debug.print("Loading this and super class names")
+	jre.debug.print("Loading this and super class names")
 	local thisClass  = {}
 	local superClass = {}
 
-	thisClass.index  = bu.readU2(stream)
-	superClass.index = bu.readU2(stream)
+	thisClass.index  = jre.utilities.binaryStream.readU2(stream)
+	superClass.index = jre.utilities.binaryStream.readU2(stream)
 
 	-- Both 'thisClassIndex' and 'superClassIndex' point at
 	-- the CONSTANT_Class, which points at the CONSTANT_Utf8,
@@ -211,8 +207,8 @@ function classLoader.loadClassNames(stream, constantPool)
 	thisClass.name  = thisClassUTF8.value
 	superClass.name = superClassUTF8.value
 
-	debug.print("This class:  #" .. thisClass.index .. " (" .. thisClass.name .. ")")
-	debug.print("Super class: #" .. superClass.index .. " (" .. superClass.name .. ")")
+	jre.debug.print("This class:  #" .. thisClass.index .. " (" .. thisClass.name .. ")")
+	jre.debug.print("Super class: #" .. superClass.index .. " (" .. superClass.name .. ")")
 	return thisClass, superClass
 end
 

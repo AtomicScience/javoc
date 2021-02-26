@@ -5,8 +5,6 @@
     More information: "doc/About JavOC/Structure/Serialization/Constant Pool"
                       "doc/About JavOC/Structure/Handlers.md"
 ]]
-local moduleLoader = require("moduleLoader")
-local debug = moduleLoader.require("debug/javaDebug")
 
 local function nameNotFound(_, tag)
 	error("Invalid name for constant pool entry (" .. tag .. ")")
