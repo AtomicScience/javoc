@@ -1,4 +1,5 @@
 --[[ UMFAL - Unified Multi-File Applications Loader
+     Should be placed in /lib
 	 Author - AtomicScience
 ]]
 local filesystem = require("filesystem")
@@ -32,8 +33,9 @@ local function getBlankApplicationWithMeta(applicationName)
     local metatable = {__index = function (subjectTable, nodeName)
         local node = umfal.loadNode(applicationName, {nodeName})
 
-        blankApplication[nodeName] = node
-
+        if umfal.nodeIsFolder(applicationName, {nodeName}) then
+            blankApplication[nodeName] = node
+        end
         return node
     end}
 
@@ -51,7 +53,9 @@ local function getFolderWithMeta(applicationName, path)
 
         local node = umfal.loadNode(applicationName, newPath)
 
-        folder[nodeName] = node
+        if umfal.nodeIsFolder(applicationName, newPath) then
+            folder[nodeName] = node
+        end
 
         return node
     end}
@@ -74,6 +78,10 @@ function umfal.loadApplication(applicationName)
 
     if not umfal.applicationFolderExists(applicationName) then
         umfal.errorManager.applicationFolderNotFound(applicationName)
+    end
+
+    if not umfal.applicationHasManifest(applicationName) then
+        umfal.errorManager.applicationManifestNotFound(applicationName)
     end
 
     application.manifest = umfal.loadManifest(umfal.getPathToManifest(applicationName))
@@ -231,5 +239,10 @@ end
 function umfal.errorManager.moduleHasWrongType(applicationName, moduleName)
     error("Failed to load module `" .. moduleName .. "`: file is not a .lua script", 2)
 end
+
+local library = umfal
+
+local umfal = library.loadApplication("umfal")
+umfal.iKnowThatThisLibraryIsForInternalUsageOnly = library
 
 return umfal
