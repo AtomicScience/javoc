@@ -1,7 +1,3 @@
---[[ Constant Pool Printer
-	Since: 0.2
-	Part of the JavOC project
-]]
 local jre = require("umfal")("javoc").jre
 
 ---Prints a constant pool

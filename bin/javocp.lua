@@ -1,7 +1,3 @@
---[[ Java Class Decompiler
-	 Since: 0.1
-	 Part of the JavOC project
-]]
 local shell         = require("shell")
 local filesystem    = require("filesystem")
 local jre           = require("umfal").initAppFromRelative("javoc", 2).jre

@@ -1,8 +1,3 @@
---[[ Help message printer
-	Since: 0.2
-	Part of the JavOC project
-]]
-
 ---Prints a help message for a javocp, that's all
 ---Why would I ever move it into separate printer?
 local function printHelpMessage()

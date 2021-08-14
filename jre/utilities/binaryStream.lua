@@ -1,7 +1,3 @@
---[[ Binary stream utilities
-	 Since: 0.1
-	 Part of the JavOC project
-]]
 local bit32 = require("bit32")
 
 local binaryStream = {}

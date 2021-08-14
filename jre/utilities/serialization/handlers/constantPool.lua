@@ -1,11 +1,5 @@
---[[ Constant pool entries serialization handler
-	Since: 0.2
-	Part of the JavOC project
-
-    More information: "doc/About JavOC/Structure/Serialization/Constant Pool"
-                      "doc/About JavOC/Structure/Handlers.md"
-]]
-
+--    More information: "doc/About JavOC/Structure/Serialization/Constant Pool"
+--                      "doc/About JavOC/Structure/Handlers.md"
 local function nameNotFound(_, tag)
 	error("Invalid name for constant pool entry (" .. tag .. ")")
 end

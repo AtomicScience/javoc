@@ -1,7 +1,3 @@
---[[ Access flags serializations
-	 Since: 0.1
-	 Part of the JavOC project
-]]
 local accessFlags = {}
 
 ---Compiles class access

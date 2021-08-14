@@ -1,8 +1,3 @@
---[[ Library for debug functions
-	 Since: 0.1
-	 Part of the JavOC project
-]]
-
 local javaDebug = {}
 
 -- Flag for stating if JVM shold run in debug mode or not

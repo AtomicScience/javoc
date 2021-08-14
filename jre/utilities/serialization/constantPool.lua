@@ -1,9 +1,4 @@
---[[ Constant pool entries serialization
-	Since: 0.2
-	Part of the JavOC project
-
-	More information: "doc/About JavOC/Structure/Serialization/Constant Pool"
-]]
+--	More information: "doc/About JavOC/Structure/Serialization/Constant Pool"
 local jre = require("umfal")("javoc").jre
 
 local serialization = {}
