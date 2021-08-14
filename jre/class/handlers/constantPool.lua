@@ -1,15 +1,8 @@
 local jre = require("umfal")("javoc").jre
 
+local constantPoolHandler = jre.class.handlers.handlerFactory.getEmptyHandler()
+
 local bit32 = require("bit32")
-
--- TODO: Move empty handler creation to a separate file
-local function tagNotFound(_, tag)
-	error("Invalid tag for constant pool entry (" .. tag .. ")")
-end
-
-local metatable = {__index = tagNotFound}
-
-local constantPool = setmetatable({}, metatable)
 
 -- Constant CONSTANT_Utf8
 -- Tag - 1
@@ -17,7 +10,7 @@ local constantPool = setmetatable({}, metatable)
 --    u2 length;
 --    u1 bytes[length];
 -- }
-constantPool[1] = function(stream)
+constantPoolHandler[1] = function(stream)
 	local constant = {}
 	constant.type  = "Utf8"
 	constant.value = ""
@@ -40,7 +33,7 @@ end
 -- Syntax: {
 --    u4 bytes
 -- }
-constantPool[3] = function(stream)
+constantPoolHandler[3] = function(stream)
 	local constant = {}
 	constant.type  = "Integer"
 	constant.value = jre.utilities.binaryStream.readU4(stream)
@@ -56,7 +49,7 @@ end
 -- Syntax: {
 --    u4 bytes
 -- }
-constantPool[4] = function(stream)
+constantPoolHandler[4] = function(stream)
 	local constant = {}
 	constant.type  = "Float"
 	
@@ -76,7 +69,7 @@ end
 --    u4 high_bytes;
 --    u4 low_bytes;
 -- }
-constantPool[5] = function(stream)
+constantPoolHandler[5] = function(stream)
 	local constant = {}
 	constant.type  = "Long"
 	
@@ -100,7 +93,7 @@ end
 --    u4 high_bytes;
 --    u4 low_bytes;
 -- }
-constantPool[6] = function(stream)
+constantPoolHandler[6] = function(stream)
 	local constant = {}
 	constant.type  = "Double"
 
@@ -123,7 +116,7 @@ end
 -- Syntax: {
 --    u2 name_index;
 -- }
-constantPool[7] = function(stream)
+constantPoolHandler[7] = function(stream)
 	local constant = {}
 	constant.type  = "Class"
 
@@ -140,7 +133,7 @@ end
 -- Syntax: {
 --    u2 string_index;
 -- }
-constantPool[8] = function(stream)
+constantPoolHandler[8] = function(stream)
 	local constant = {}
 	constant.type  = "String"
 
@@ -158,7 +151,7 @@ end
 --    u2 class_index;
 --    u2 name_and_type_index;
 -- }
-constantPool[9] = function(stream)
+constantPoolHandler[9] = function(stream)
 	local constant = {}
 	constant.type  = "Fieldref"
 
@@ -178,7 +171,7 @@ end
 --    u2 class_index;
 --    u2 name_and_type_index;
 -- }
-constantPool[10] = function(stream)
+constantPoolHandler[10] = function(stream)
 	local constant = {}
 	constant.type  = "Methodref"
 
@@ -198,7 +191,7 @@ end
 --    u2 class_index;
 --    u2 name_and_type_index;
 -- }
-constantPool[11] = function(stream)
+constantPoolHandler[11] = function(stream)
 	local constant = {}
 	constant.type  = "InterfaceMethodref"
 
@@ -218,7 +211,7 @@ end
 --    u2 name_index;
 --    u2 descriptor_index;
 -- }
-constantPool[12] = function(stream)
+constantPoolHandler[12] = function(stream)
 	local constant = {}
 	constant.type  = "NameAndType"
 
@@ -232,4 +225,4 @@ constantPool[12] = function(stream)
 	return constant
 end
 
-return constantPool
+return constantPoolHandler
