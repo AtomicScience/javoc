@@ -39,7 +39,7 @@ function classLoader.loadClassFromStream(stream)
 
 	class.version = classLoader.loadVersion(stream)
 	class.constantPool = javoc.jre.class.constantPoolLoader.load(stream)
-	class.accessFlags = classLoader.loadAccessFlags(stream)
+	class.accessFlags = javoc.jre.class.accessFlagsLoader.load(stream)
 	class.thisClass, class.superClass = classLoader.loadClassNames(stream, class.constantPool)
 
 	debugPrint("Class " .. class.thisClass.name .. " loaded successfully")
@@ -64,42 +64,6 @@ function classLoader.loadVersion(stream)
 	debugPrint("Versions loaded successfully!")
 	debugPrint("Major - " .. version.major .. "; Minor - " .. version.minor)
 	return version
-end
-
--- TODO: REFACTOR THIS MESS ASAP!!!!
-function classLoader.loadAccessFlags(stream)
-	debugPrint("Loading access flags")
-
-	local accessFlags = {}
-	accessFlags.mask = binaryStream.readU2(stream)
-
-	debugPrint("Mask: " .. string.format("0x%x", accessFlags.mask))
-
-	accessFlags["ACC_PUBLIC"]     = binaryStream.mask(accessFlags.mask, 0x0001)
-	debugPrint("ACC_PUBLIC: " .. tostring(accessFlags["ACC_PUBLIC"]))
-
-	accessFlags["ACC_FINAL"]      = binaryStream.mask(accessFlags.mask, 0x0010)
-	debugPrint("ACC_FINAL: " .. tostring(accessFlags["ACC_FINAL"]))
-
-	accessFlags["ACC_SUPER"]      = binaryStream.mask(accessFlags.mask, 0x0020)
-	debugPrint("ACC_SUPER: " .. tostring(accessFlags["ACC_SUPER"]))
-
-	accessFlags["ACC_INTERFACE"]  = binaryStream.mask(accessFlags.mask, 0x0200)
-	debugPrint("ACC_INTERFACE: " .. tostring(accessFlags["ACC_INTERFACE"]))
-
-	accessFlags["ACC_ABSTRACT"]   = binaryStream.mask(accessFlags.mask, 0x0400)
-	debugPrint("ACC_ABSTRACT: " .. tostring(accessFlags["ACC_ABSTRACT"]))
-
-	accessFlags["ACC_SYNTHETIC"]  = binaryStream.mask(accessFlags.mask, 0x1000)
-	debugPrint("ACC_SYNTHETIC: " .. tostring(accessFlags["ACC_SYNTHETIC"]))
-
-	accessFlags["ACC_ANNOTATION"] = binaryStream.mask(accessFlags.mask, 0x2000)
-	debugPrint("ACC_ANNOTATION: " .. tostring(accessFlags["ACC_ANNOTATION"]))
-
-	accessFlags["ACC_ENUM"]       = binaryStream.mask(accessFlags.mask, 0x4000)
-	debugPrint("ACC_ENUM: " .. tostring(accessFlags["ACC_ENUM"]))
-
-	return accessFlags
 end
 
 function classLoader.loadClassNames(stream, constantPool)
