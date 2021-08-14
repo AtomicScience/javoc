@@ -1,22 +1,22 @@
 # Changelogs and to-do lists
-## Version 0.2
+## Version 0.2 - Released 24.02.2021
 In this pre-release I plan to implement readings of the constant pool and expand documentation 
 ### Class loading:
-- [x] **Implemented class loading features**
-  - [x] Constant pool readings
-  - [x] Access flags
-  - [x] Current and super classes names
+- **Implemented class loading features**
+  - Constant pool readings
+  - Access flags
+  - Current and super classes names
 ### Tools
-- [x] Class decompiler (javocp)
-  - [x] Class names *(this and super)*
-  - [x] Class indexes *(this and super)*
-  - [x] Access flags
-  - [x] Constant pool
+- Class decompiler (javocp)
+  - Class names *(this and super)*
+  - Class indexes *(this and super)*
+  - Access flags
+  - Constant pool
 ### Documentation
-- [x] Expand "Class File Format"
-  - [x] 'Magic Value'
-  - [x] Versions
-  - [x] Constant pool
+- Expand "Class File Format"
+  - 'Magic Value'
+  - Versions
+  - Constant pool
 
 ## Version 0.1 - Released 07.08.2020
 This is a very first version of the project.
