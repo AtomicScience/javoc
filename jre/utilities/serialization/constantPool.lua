@@ -4,7 +4,7 @@
 
 	More information: "doc/About JavOC/Structure/Serialization/Constant Pool"
 ]]
-local jre = require("umfal").javoc.jre
+local jre = require("umfal")("javoc").jre
 
 local serialization = {}
 

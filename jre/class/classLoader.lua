@@ -2,7 +2,7 @@
 	 Since: 0.1
 	 Part of the JavOC project
 ]]
-local jre         = require("umfal").javoc.jre
+local jre         = require("umfal")("javoc").jre
 
 local classLoader = {}
 

@@ -2,7 +2,7 @@
 	Since: 0.2
 	Part of the JavOC project
 ]]
-local jre = require("umfal").javoc.jre
+local jre = require("umfal")("javoc").jre
 
 ---Prints a constant pool
 ---@param constantPool table   @ Table of the constant pool - output of the

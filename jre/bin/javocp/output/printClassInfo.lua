@@ -2,7 +2,7 @@
 	Since: 0.2
 	Part of the JavOC project
 ]]
-local jre        = require("umfal").javoc.jre
+local jre           = require("umfal")("javoc").jre
 local filesystem    = require("filesystem")
 
 ---Prints different information about class

@@ -2,15 +2,9 @@
 	 Since: 0.1
 	 Part of the JavOC project
 ]]
--- Adding path to our JVM components to the package loader.
--- However, before doing so, we should check if we'd already added it
-if not package.path:find("jre") then
-	package.path = package.path .. ";jre/?.lua"
-end
-
 local shell         = require("shell")
 local filesystem    = require("filesystem")
-local jre         = require("umfal").javoc.jre
+local jre           = require("umfal").initAppFromRelative("javoc", 2).jre
 
 -- The flag to indicate if output should be verbose or not
 local verbose = false
@@ -36,6 +30,7 @@ end
 
 -- Name of the class to load
 local classToLoad = args[1]
+
 local class = jre.class.classLoader.loadClassFromFile(classToLoad, "")
 
 local fullPathToClass = filesystem.canonical(shell.getWorkingDirectory() .. "/" .. classToLoad)

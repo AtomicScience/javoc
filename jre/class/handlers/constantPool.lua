@@ -3,7 +3,7 @@
 	 Part of the JavOC project
 	 More information - `doc/About JavOC/Structure/Handlers.md`
 ]]
-local jre = require("umfal").javoc.jre
+local jre = require("umfal")("javoc").jre
 
 local bit32 = require("bit32")
 
