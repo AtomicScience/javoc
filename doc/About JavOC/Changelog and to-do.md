@@ -1,4 +1,7 @@
 # Changelogs and to-do lists
+## Version 0.3
+This release is a refactoring one, to get myself on track after a half-year project pause
+#### No feature changes for this release
 ## Version 0.2 - Released 24.02.2021
 In this pre-release I plan to implement readings of the constant pool and expand documentation 
 ### Class loading:
