@@ -1,11 +1,7 @@
 --    More information: "doc/About JavOC/Structure/Serialization/Constant Pool"
 --                      "doc/About JavOC/Structure/Handlers.md"
-local function nameNotFound(_, tag)
-	error("Invalid name for constant pool entry (" .. tag .. ")")
-end
-
-local metatable = {__index = nameNotFound}
-local handler = setmetatable({}, metatable)
+local javoc = require("umfal")("javoc")
+local handler = javoc.jre.class.handlers.handlerFactory.getEmptyHandler()
 
 -- Constant DUMMY
 -- Syntax: {
