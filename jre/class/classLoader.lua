@@ -38,7 +38,7 @@ function classLoader.loadClassFromStream(stream)
 	debugPrint("Correct 'magic value' is loaded")
 
 	class.version = classLoader.loadVersion(stream)
-	class.constantPool = classLoader.loadConstantPool(stream)
+	class.constantPool = javoc.jre.class.constantPoolLoader.load(stream)
 	class.accessFlags = classLoader.loadAccessFlags(stream)
 	class.thisClass, class.superClass = classLoader.loadClassNames(stream, class.constantPool)
 
@@ -64,44 +64,6 @@ function classLoader.loadVersion(stream)
 	debugPrint("Versions loaded successfully!")
 	debugPrint("Major - " .. version.major .. "; Minor - " .. version.minor)
 	return version
-end
-
-function classLoader.loadConstantPool(stream)
-	debugPrint("Loading constant pool")
-
-	local constantPool = {}
-	constantPool.size = binaryStream.readU2(stream)
-	debugPrint("Size of the constant pool - " .. constantPool.size)
-
-	local currentIndex = 1
-
-	debugPrint("Constants in the pool:")
-	while currentIndex < constantPool.size do
-		local tag = binaryStream.readU1(stream)
-		debugPrint("Constant #" .. currentIndex .. " with tag " .. tag)
-		-- Since Double and Long constants occuppy two indexes in the
-		-- constant pool, they will return not one constant, but two:
-		-- the actual one and the 'dummy'. "Normal" constants will
-		-- set 'dummyConstant' field to nil
-		local constant, dummyConstant = javoc.jre.class.handlers.constantPool[tag](stream)
-		table.insert(constantPool, constant)
-
-		if dummyConstant then
-			-- If dummyConstant is NOT nil, it means that
-			-- the 'fat' constant was loaded.
-			-- So, we should increment currentIndex on 2 and insert
-			-- a dummyConstant into table as well
-			table.insert(constantPool, dummyConstant)
-
-			currentIndex = currentIndex + 2
-		else
-			-- If dummyConstant is nil, it means that
-			-- the 'normal' constant was loaded.
-			currentIndex = currentIndex + 1
-		end
-	end
-
-	return constantPool
 end
 
 -- TODO: REFACTOR THIS MESS ASAP!!!!
