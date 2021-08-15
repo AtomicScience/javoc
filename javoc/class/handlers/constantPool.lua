@@ -19,10 +19,7 @@ constantPoolHandler[1] = function(stream)
 
 	local length = binaryUtils.readU2(stream)
 
-	-- TODO: Implement proper UTF8 loading
-	for i = 1, length do
-		constant.value = constant.value .. string.char(binaryUtils.readU1(stream))
-	end
+	constant.value = stream:read(length)
 
 	debugPrint("Utf8 constant.")
 	debugPrint("Lenght - " .. length .. " bytes")
