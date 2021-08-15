@@ -2,6 +2,7 @@ local javoc, classLoader = require("umfal")("javoc")
 
 local debugPrint = javoc.util.debug.print
 local binaryUtils = javoc.util.binaryUtils
+-- TODO: Split file and stream loaders
 ---Loads a class from a file. Path is relative from classpath
 ---@param file string           @ Name of the class to load
 ---@param classpath string      @ Absolute path to the classes to load
@@ -37,11 +38,10 @@ function classLoader.loadClassFromStream(stream)
 
 	debugPrint("Correct 'magic value' is loaded")
 
-	-- TODO: Move all the code to the separate loaders
-	class.version = classLoader.loadVersion(stream)
-	class.constantPool = javoc.class.constantPoolLoader.load(stream)
-	class.accessFlags = javoc.class.accessFlagsLoader.load(stream)
-	class.thisClass, class.superClass = classLoader.loadClassNames(stream, class.constantPool)
+	class.version      = javoc.class.subloaders.version.load(stream)
+	class.constantPool = javoc.class.subloaders.constantPool.load(stream)
+	class.accessFlags  = javoc.class.subloaders.accessFlags.load(stream)
+	class.thisClass, class.superClass = javoc.class.subloaders.classNames.load(stream, class.constantPool)
 
 	debugPrint("Class " .. class.thisClass.name .. " loaded successfully")
 
@@ -54,42 +54,3 @@ function classLoader.checkMagicValue(stream)
 
 	return (magicValue == 0xCAFEBABE)
 end
-
-function classLoader.loadVersion(stream)
-	debugPrint("Loading versions (major and minor)")
-	local version = {}
-
-	version.minor = binaryUtils.readU2(stream)
-	version.major = binaryUtils.readU2(stream)
-
-	debugPrint("Versions loaded successfully!")
-	debugPrint("Major - " .. version.major .. "; Minor - " .. version.minor)
-	return version
-end
-
-function classLoader.loadClassNames(stream, constantPool)
-	debugPrint("Loading this and super class names")
-	local thisClass  = {}
-	local superClass = {}
-
-	thisClass.index  = binaryUtils.readU2(stream)
-	superClass.index = binaryUtils.readU2(stream)
-
-	-- Both 'thisClassIndex' and 'superClassIndex' point at
-	-- the CONSTANT_Class, which points at the CONSTANT_Utf8,
-	-- which contains the string we want
-	local thisClassConstantClass  = constantPool[thisClass.index]
-	local superClassConstantClass = constantPool[superClass.index]
-
-	local thisClassUTF8  = constantPool[thisClassConstantClass.nameIndex]
-	local superClassUTF8 = constantPool[superClassConstantClass.nameIndex]
-
-	thisClass.name  = thisClassUTF8.value
-	superClass.name = superClassUTF8.value
-
-	debugPrint("This class:  #" .. thisClass.index .. " (" .. thisClass.name .. ")")
-	debugPrint("Super class: #" .. superClass.index .. " (" .. superClass.name .. ")")
-	return thisClass, superClass
-end
-
-return classLoader

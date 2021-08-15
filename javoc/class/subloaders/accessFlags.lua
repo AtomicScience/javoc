@@ -1,4 +1,4 @@
-local javoc, accessFlagsLoader = require("umfal")("javoc")
+local javoc, accessFlags = require("umfal")("javoc")
 
 local debugPrint = javoc.util.debug.print
 local binaryUtils = javoc.util.binaryUtils
@@ -7,7 +7,7 @@ local function debugPrintAccessFlag(name, value)
     debugPrint(name .. " - " .. tostring(value))
 end
 
-function accessFlagsLoader.load(stream)
+function accessFlags.load(stream)
 	debugPrint("Loading access flags")
 
 	local accessFlags = {}

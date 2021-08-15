@@ -1,9 +1,9 @@
-local javoc, constantPoolLoader = require("umfal")("javoc")
+local javoc, constantPool = require("umfal")("javoc")
 
 local debugPrint = javoc.util.debug.print
 local binaryUtils = javoc.util.binaryUtils
 
-function constantPoolLoader.load(stream)
+function constantPool.load(stream)
 	debugPrint("Loading constant pool")
 
 	local constantPool = {}
