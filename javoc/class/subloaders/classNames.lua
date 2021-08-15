@@ -1,9 +1,9 @@
-local javoc, clasNames = require("umfal")("javoc")
+local javoc, classNames = require("umfal")("javoc")
 
 local debugPrint = javoc.util.debug.print
 local binaryUtils = javoc.util.binaryUtils
 
-function clasNames.load(stream, constantPool)
+function classNames.load(stream, constantPool)
 	debugPrint("Loading this and super class names")
 	local thisClass  = {}
 	local superClass = {}
