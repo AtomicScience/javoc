@@ -1,4 +1,3 @@
--- TODO: Relocate the file to bin directory in 'jre', then rename 'jre'
 local shell         = require("shell")
 local filesystem    = require("filesystem")
 local javoc         = require("umfal").initAppFromRelative("javoc", 3)

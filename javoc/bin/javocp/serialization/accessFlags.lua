@@ -1,5 +1,6 @@
 local accessFlags = {}
 
+-- TODO: Refactor the mess below
 ---Compiles class access
 ---@param accessFlags table    @ Table of the access flags - output of the
 ---                              classLoader.loadAccessFlags() function

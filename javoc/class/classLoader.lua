@@ -37,6 +37,7 @@ function classLoader.loadClassFromStream(stream)
 
 	debugPrint("Correct 'magic value' is loaded")
 
+	-- TODO: Move all the code to the separate loaders
 	class.version = classLoader.loadVersion(stream)
 	class.constantPool = javoc.class.constantPoolLoader.load(stream)
 	class.accessFlags = javoc.class.accessFlagsLoader.load(stream)

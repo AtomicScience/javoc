@@ -1,4 +1,3 @@
--- TODO: Move this file into 'api' directory
 local javoc, handlerFactory = require("umfal")("javoc")
 
 local function tagNotFound(_, tag)
