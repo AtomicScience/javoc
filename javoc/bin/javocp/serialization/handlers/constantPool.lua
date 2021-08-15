@@ -1,7 +1,7 @@
 --    More information: "doc/About JavOC/Structure/Serialization/Constant Pool"
 --                      "doc/About JavOC/Structure/Handlers.md"
 local javoc = require("umfal")("javoc")
-local handler = javoc.jre.util.handlerFactory.getEmptyHandler()
+local handler = javoc.util.handlerFactory.getEmptyHandler()
 
 -- Constant DUMMY
 -- Syntax: {

@@ -1,5 +1,5 @@
 --	More information: "doc/About JavOC/Structure/Serialization/Constant Pool"
-local jre = require("umfal")("javoc").jre
+local javoc = require("umfal")("javoc")
 
 local serialization = {}
 
@@ -18,7 +18,7 @@ function serialization.toString(constantPool, index)
 	local constant = constantPool[index]
 	local type = constant.type
 
-	local value, comment = jre.bin.javocp.serialization.handlers.constantPool[type](constantPool, index)
+	local value, comment = javoc.bin.javocp.serialization.handlers.constantPool[type](constantPool, index)
 
 	return value, comment
 end

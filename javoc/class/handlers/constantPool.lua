@@ -1,8 +1,8 @@
 local javoc = require("umfal")("javoc")
 
-local constantPoolHandler = javoc.jre.util.handlerFactory.getEmptyHandler()
-local debugPrint = javoc.jre.util.debug.print
-local binaryStream = javoc.jre.util.binaryStream
+local constantPoolHandler = javoc.util.handlerFactory.getEmptyHandler()
+local debugPrint = javoc.util.debug.print
+local binaryStream = javoc.util.binaryStream
 
 local bit32 = require("bit32")
 

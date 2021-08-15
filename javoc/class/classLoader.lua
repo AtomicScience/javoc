@@ -1,7 +1,7 @@
 local javoc, classLoader = require("umfal")("javoc")
 
-local debugPrint = javoc.jre.util.debug.print
-local binaryStream = javoc.jre.util.binaryStream
+local debugPrint = javoc.util.debug.print
+local binaryStream = javoc.util.binaryStream
 ---Loads a class from a file. Path is relative from classpath
 ---@param file string           @ Name of the class to load
 ---@param classpath string      @ Absolute path to the classes to load
@@ -38,8 +38,8 @@ function classLoader.loadClassFromStream(stream)
 	debugPrint("Correct 'magic value' is loaded")
 
 	class.version = classLoader.loadVersion(stream)
-	class.constantPool = javoc.jre.class.constantPoolLoader.load(stream)
-	class.accessFlags = javoc.jre.class.accessFlagsLoader.load(stream)
+	class.constantPool = javoc.class.constantPoolLoader.load(stream)
+	class.accessFlags = javoc.class.accessFlagsLoader.load(stream)
 	class.thisClass, class.superClass = classLoader.loadClassNames(stream, class.constantPool)
 
 	debugPrint("Class " .. class.thisClass.name .. " loaded successfully")

@@ -1,7 +1,7 @@
 local javoc, constantPoolLoader = require("umfal")("javoc")
 
-local debugPrint = javoc.jre.util.debug.print
-local binaryStream = javoc.jre.util.binaryStream
+local debugPrint = javoc.util.debug.print
+local binaryStream = javoc.util.binaryStream
 
 function constantPoolLoader.load(stream)
 	debugPrint("Loading constant pool")
@@ -20,7 +20,7 @@ function constantPoolLoader.load(stream)
 		-- constant pool, they will return not one constant, but two:
 		-- the actual one and the 'dummy'. "Normal" constants will
 		-- set 'dummyConstant' field to nil
-		local constant, dummyConstant = javoc.jre.class.handlers.constantPool[tag](stream)
+		local constant, dummyConstant = javoc.class.handlers.constantPool[tag](stream)
 		table.insert(constantPool, constant)
 
 		if dummyConstant then

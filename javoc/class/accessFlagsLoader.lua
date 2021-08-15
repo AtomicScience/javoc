@@ -1,7 +1,7 @@
 local javoc, accessFlagsLoader = require("umfal")("javoc")
 
-local debugPrint = javoc.jre.util.debug.print
-local binaryStream = javoc.jre.util.binaryStream
+local debugPrint = javoc.util.debug.print
+local binaryStream = javoc.util.binaryStream
 
 -- TODO: Move this table to the separate file
 local accessFlagsMasks = {
