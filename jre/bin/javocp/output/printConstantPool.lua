@@ -18,7 +18,7 @@ local function printConstantPool(constantPool)
 			local type        = constant.type
 			local typeSpacing = string.rep(" ", 20 - string.len(type))
 
-			local value, comment = jre.utilities.serialization.constantPool.toString(constantPool, i)
+			local value, comment = jre.bin.javocp.serialization.constantPool.toString(constantPool, i)
 			local valueSpacing   = string.rep(" ", 16 - string.len(value))
 
 			-- Trying to concatenate nil value will result in error

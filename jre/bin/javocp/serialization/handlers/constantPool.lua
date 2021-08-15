@@ -54,7 +54,6 @@ end
 handler["Float"] = function(constantPool, constantIndex)
     local constant = constantPool[constantIndex]
 
-    -- Appending a letter to easily distinguish non-integer numbers (e.g '12.3f')
     local value   = tostring(constant.value) .. "f"
     local comment = nil
 
@@ -69,7 +68,6 @@ end
 handler["Long"] = function(constantPool, constantIndex)
     local constant = constantPool[constantIndex]
 
-    -- Appending a letter to easily distinguish non-integer numbers (e.g '12.3f')
     local value   = tostring(constant.value) .. "l"
     local comment = nil
 
@@ -84,7 +82,6 @@ end
 handler["Double"] = function(constantPool, constantIndex)
     local constant = constantPool[constantIndex]
 
-    -- Appending a letter to easily distinguish non-integer numbers (e.g '12.3f')
     local value   = tostring(constant.value) .. "d"
     local comment = nil
 

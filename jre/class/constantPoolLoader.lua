@@ -1,7 +1,7 @@
 local javoc, constantPoolLoader = require("umfal")("javoc")
 
-local debugPrint = javoc.jre.debug.print
-local binaryStream = javoc.jre.utilities.binaryStream
+local debugPrint = javoc.jre.util.debug.print
+local binaryStream = javoc.jre.util.binaryStream
 
 function constantPoolLoader.load(stream)
 	debugPrint("Loading constant pool")

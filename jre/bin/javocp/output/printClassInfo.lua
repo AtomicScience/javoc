@@ -19,7 +19,7 @@ local function printClassInfo(class, fullPathToClass)
     print("class " .. class.thisClass.name .. extends)
     print("  minor version: " .. class.version.minor)
     print("  major version: " .. class.version.major)
-    print("  flags: " .. jre.utilities.serialization.accessFlags.toString(class.accessFlags))
+    print("  flags: " .. jre.bin.javocp.serialization.accessFlags.toString(class.accessFlags))
     print("  this_class: #" .. class.thisClass.index)
     print("  super_class: #" .. class.superClass.index)
 end

@@ -1,5 +1,6 @@
 local bit32 = require("bit32")
 
+-- TODO: Rename to binaryUtils
 local binaryStream = {}
 
 ---Loads a one-byte (8 bit) unsigned integer from the stream

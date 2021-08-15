@@ -1,7 +1,7 @@
 local javoc, classLoader = require("umfal")("javoc")
 
-local debugPrint = javoc.jre.debug.print
-local binaryStream = javoc.jre.utilities.binaryStream
+local debugPrint = javoc.jre.util.debug.print
+local binaryStream = javoc.jre.util.binaryStream
 ---Loads a class from a file. Path is relative from classpath
 ---@param file string           @ Name of the class to load
 ---@param classpath string      @ Absolute path to the classes to load

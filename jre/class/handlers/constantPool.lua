@@ -1,6 +1,8 @@
-local jre = require("umfal")("javoc").jre
+local javoc = require("umfal")("javoc")
 
-local constantPoolHandler = jre.class.handlers.handlerFactory.getEmptyHandler()
+local constantPoolHandler = javoc.jre.class.handlers.handlerFactory.getEmptyHandler()
+local debugPrint = javoc.jre.util.debug.print
+local binaryStream = javoc.jre.util.binaryStream
 
 local bit32 = require("bit32")
 
@@ -15,15 +17,16 @@ constantPoolHandler[1] = function(stream)
 	constant.type  = "Utf8"
 	constant.value = ""
 
-	local length = jre.utilities.binaryStream.readU2(stream)
+	local length = binaryStream.readU2(stream)
 
+	-- TODO: Implement proper UTF8 loading
 	for i = 1, length do
-		constant.value = constant.value .. string.char(jre.utilities.binaryStream.readU1(stream))
+		constant.value = constant.value .. string.char(binaryStream.readU1(stream))
 	end
 
-	jre.debug.print("Utf8 constant.")
-	jre.debug.print("Lenght - " .. length .. " bytes")
-	jre.debug.print("Value  - " .. constant.value)
+	debugPrint("Utf8 constant.")
+	debugPrint("Lenght - " .. length .. " bytes")
+	debugPrint("Value  - " .. constant.value)
 
 	return constant
 end
@@ -36,10 +39,10 @@ end
 constantPoolHandler[3] = function(stream)
 	local constant = {}
 	constant.type  = "Integer"
-	constant.value = jre.utilities.binaryStream.readU4(stream)
+	constant.value = binaryStream.readU4(stream)
 
-	jre.debug.print("Integer constant.")
-	jre.debug.print("Value - " .. constant.value)
+	debugPrint("Integer constant.")
+	debugPrint("Value - " .. constant.value)
 
 	return constant
 end
@@ -57,8 +60,8 @@ constantPoolHandler[4] = function(stream)
 
 	constant.value = string.unpack(">f", bytes)
 
-	jre.debug.print("Float constant.")
-	jre.debug.print("Value - " .. constant.value)
+	debugPrint("Float constant.")
+	debugPrint("Value - " .. constant.value)
 
 	return constant
 end
@@ -73,14 +76,14 @@ constantPoolHandler[5] = function(stream)
 	local constant = {}
 	constant.type  = "Long"
 	
-	local highBytes = jre.utilities.binaryStream.readU4(stream)
-	local lowBytes  = jre.utilities.binaryStream.readU4(stream)
+	local highBytes = binaryStream.readU4(stream)
+	local lowBytes  = binaryStream.readU4(stream)
 
 	-- value = (highBytes << 32) + lowBytes
 	constant.value = bit32.lshift(highBytes, 32) + lowBytes
 
-	jre.debug.print("Long constant.")
-	jre.debug.print("Value - " .. constant.value)
+	debugPrint("Long constant.")
+	debugPrint("Value - " .. constant.value)
 
 	-- Since Long and Double constants "occuppy" 2 indexes
 	-- in the table, a dummy constant should be inserted
@@ -103,8 +106,8 @@ constantPoolHandler[6] = function(stream)
 	-- value = (highBytes << 32) + lowBytes
 	constant.value = string.unpack(">d", highBytes .. lowBytes)
 
-	jre.debug.print("Double constant.")
-	jre.debug.print("Value - " .. constant.value)
+	debugPrint("Double constant.")
+	debugPrint("Value - " .. constant.value)
 
 	-- Since Long and Double constants "occuppy" 2 indexes
 	-- in the table, a dummy constant should be inserted
@@ -120,10 +123,10 @@ constantPoolHandler[7] = function(stream)
 	local constant = {}
 	constant.type  = "Class"
 
-	constant.nameIndex = jre.utilities.binaryStream.readU2(stream)
+	constant.nameIndex = binaryStream.readU2(stream)
 
-	jre.debug.print("Class constant.")
-	jre.debug.print("Name index - " .. constant.nameIndex)
+	debugPrint("Class constant.")
+	debugPrint("Name index - " .. constant.nameIndex)
 
 	return constant
 end
@@ -137,10 +140,10 @@ constantPoolHandler[8] = function(stream)
 	local constant = {}
 	constant.type  = "String"
 
-	constant.stringIndex = jre.utilities.binaryStream.readU2(stream)
+	constant.stringIndex = binaryStream.readU2(stream)
 
-	jre.debug.print("String constant.")
-	jre.debug.print("Utf8 index - " .. constant.stringIndex)
+	debugPrint("String constant.")
+	debugPrint("Utf8 index - " .. constant.stringIndex)
 
 	return constant
 end
@@ -155,12 +158,12 @@ constantPoolHandler[9] = function(stream)
 	local constant = {}
 	constant.type  = "Fieldref"
 
-	constant.classIndex       = jre.utilities.binaryStream.readU2(stream)
-	constant.nameAndTypeIndex = jre.utilities.binaryStream.readU2(stream)
+	constant.classIndex       = binaryStream.readU2(stream)
+	constant.nameAndTypeIndex = binaryStream.readU2(stream)
 
-	jre.debug.print("Fieldref constant")
-	jre.debug.print("Class index         - " .. constant.classIndex)
-	jre.debug.print("Name and type index - " .. constant.nameAndTypeIndex)
+	debugPrint("Fieldref constant")
+	debugPrint("Class index         - " .. constant.classIndex)
+	debugPrint("Name and type index - " .. constant.nameAndTypeIndex)
 
 	return constant
 end
@@ -175,12 +178,12 @@ constantPoolHandler[10] = function(stream)
 	local constant = {}
 	constant.type  = "Methodref"
 
-	constant.classIndex       = jre.utilities.binaryStream.readU2(stream)
-	constant.nameAndTypeIndex = jre.utilities.binaryStream.readU2(stream)
+	constant.classIndex       = binaryStream.readU2(stream)
+	constant.nameAndTypeIndex = binaryStream.readU2(stream)
 
-	jre.debug.print("Methodref constant")
-	jre.debug.print("Class index         - " .. constant.classIndex)
-	jre.debug.print("Name and type index - " .. constant.nameAndTypeIndex)
+	debugPrint("Methodref constant")
+	debugPrint("Class index         - " .. constant.classIndex)
+	debugPrint("Name and type index - " .. constant.nameAndTypeIndex)
 
 	return constant
 end
@@ -195,12 +198,12 @@ constantPoolHandler[11] = function(stream)
 	local constant = {}
 	constant.type  = "InterfaceMethodref"
 
-	constant.classIndex       = jre.utilities.binaryStream.readU2(stream)
-	constant.nameAndTypeIndex = jre.utilities.binaryStream.readU2(stream)
+	constant.classIndex       = binaryStream.readU2(stream)
+	constant.nameAndTypeIndex = binaryStream.readU2(stream)
 
-	jre.debug.print("InterfaceMethodref constant")
-	jre.debug.print("Class index         - " .. constant.classIndex)
-	jre.debug.print("Name and type index - " .. constant.nameAndTypeIndex)
+	debugPrint("InterfaceMethodref constant")
+	debugPrint("Class index         - " .. constant.classIndex)
+	debugPrint("Name and type index - " .. constant.nameAndTypeIndex)
 
 	return constant
 end
@@ -215,12 +218,12 @@ constantPoolHandler[12] = function(stream)
 	local constant = {}
 	constant.type  = "NameAndType"
 
-	constant.nameIndex        = jre.utilities.binaryStream.readU2(stream)
-	constant.descriptorIndex  = jre.utilities.binaryStream.readU2(stream)
+	constant.nameIndex        = binaryStream.readU2(stream)
+	constant.descriptorIndex  = binaryStream.readU2(stream)
 
-	jre.debug.print("NameAndType constant")
-	jre.debug.print("Name index       - " .. constant.nameIndex)
-	jre.debug.print("Descriptor index - " .. constant.descriptorIndex)
+	debugPrint("NameAndType constant")
+	debugPrint("Name index       - " .. constant.nameIndex)
+	debugPrint("Descriptor index - " .. constant.descriptorIndex)
 
 	return constant
 end
