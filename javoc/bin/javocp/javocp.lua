@@ -22,7 +22,7 @@ end
 
 local classToLoad = args[1]
 
-local class = javoc.class.classLoader.loadClassFromFile(classToLoad, "")
+local class = javoc.class.fileClassLoader.load(classToLoad, "")
 
 local fullPathToClass = filesystem.canonical(shell.getWorkingDirectory() .. "/" .. classToLoad)
 
