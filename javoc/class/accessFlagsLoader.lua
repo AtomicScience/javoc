@@ -1,7 +1,7 @@
 local javoc, accessFlagsLoader = require("umfal")("javoc")
 
 local debugPrint = javoc.util.debug.print
-local binaryStream = javoc.util.binaryStream
+local binaryUtils = javoc.util.binaryUtils
 
 local function debugPrintAccessFlag(name, value)
     debugPrint(name .. " - " .. tostring(value))
@@ -12,11 +12,11 @@ function accessFlagsLoader.load(stream)
 
 	local accessFlags = {}
 
-    local allFlagsFromStream = binaryStream.readU2(stream)
+    local allFlagsFromStream = binaryUtils.readU2(stream)
     debugPrint("Access flags mask: " .. string.format("0x%x", allFlagsFromStream))
 
     for flagName, flagMask in pairs(javoc.class.values.accessFlagsMasks) do
-        local flagValue = binaryStream.mask(allFlagsFromStream, flagMask)
+        local flagValue = binaryUtils.mask(allFlagsFromStream, flagMask)
 
         accessFlags[flagName] = flagValue
 

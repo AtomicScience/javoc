@@ -2,7 +2,7 @@ local javoc = require("umfal")("javoc")
 
 local constantPoolHandler = javoc.util.handlerFactory.getEmptyHandler()
 local debugPrint = javoc.util.debug.print
-local binaryStream = javoc.util.binaryStream
+local binaryUtils = javoc.util.binaryUtils
 
 local bit32 = require("bit32")
 
@@ -17,11 +17,11 @@ constantPoolHandler[1] = function(stream)
 	constant.type  = "Utf8"
 	constant.value = ""
 
-	local length = binaryStream.readU2(stream)
+	local length = binaryUtils.readU2(stream)
 
 	-- TODO: Implement proper UTF8 loading
 	for i = 1, length do
-		constant.value = constant.value .. string.char(binaryStream.readU1(stream))
+		constant.value = constant.value .. string.char(binaryUtils.readU1(stream))
 	end
 
 	debugPrint("Utf8 constant.")
@@ -39,7 +39,7 @@ end
 constantPoolHandler[3] = function(stream)
 	local constant = {}
 	constant.type  = "Integer"
-	constant.value = binaryStream.readU4(stream)
+	constant.value = binaryUtils.readU4(stream)
 
 	debugPrint("Integer constant.")
 	debugPrint("Value - " .. constant.value)
@@ -76,8 +76,8 @@ constantPoolHandler[5] = function(stream)
 	local constant = {}
 	constant.type  = "Long"
 	
-	local highBytes = binaryStream.readU4(stream)
-	local lowBytes  = binaryStream.readU4(stream)
+	local highBytes = binaryUtils.readU4(stream)
+	local lowBytes  = binaryUtils.readU4(stream)
 
 	-- value = (highBytes << 32) + lowBytes
 	constant.value = bit32.lshift(highBytes, 32) + lowBytes
@@ -123,7 +123,7 @@ constantPoolHandler[7] = function(stream)
 	local constant = {}
 	constant.type  = "Class"
 
-	constant.nameIndex = binaryStream.readU2(stream)
+	constant.nameIndex = binaryUtils.readU2(stream)
 
 	debugPrint("Class constant.")
 	debugPrint("Name index - " .. constant.nameIndex)
@@ -140,7 +140,7 @@ constantPoolHandler[8] = function(stream)
 	local constant = {}
 	constant.type  = "String"
 
-	constant.stringIndex = binaryStream.readU2(stream)
+	constant.stringIndex = binaryUtils.readU2(stream)
 
 	debugPrint("String constant.")
 	debugPrint("Utf8 index - " .. constant.stringIndex)
@@ -158,8 +158,8 @@ constantPoolHandler[9] = function(stream)
 	local constant = {}
 	constant.type  = "Fieldref"
 
-	constant.classIndex       = binaryStream.readU2(stream)
-	constant.nameAndTypeIndex = binaryStream.readU2(stream)
+	constant.classIndex       = binaryUtils.readU2(stream)
+	constant.nameAndTypeIndex = binaryUtils.readU2(stream)
 
 	debugPrint("Fieldref constant")
 	debugPrint("Class index         - " .. constant.classIndex)
@@ -178,8 +178,8 @@ constantPoolHandler[10] = function(stream)
 	local constant = {}
 	constant.type  = "Methodref"
 
-	constant.classIndex       = binaryStream.readU2(stream)
-	constant.nameAndTypeIndex = binaryStream.readU2(stream)
+	constant.classIndex       = binaryUtils.readU2(stream)
+	constant.nameAndTypeIndex = binaryUtils.readU2(stream)
 
 	debugPrint("Methodref constant")
 	debugPrint("Class index         - " .. constant.classIndex)
@@ -198,8 +198,8 @@ constantPoolHandler[11] = function(stream)
 	local constant = {}
 	constant.type  = "InterfaceMethodref"
 
-	constant.classIndex       = binaryStream.readU2(stream)
-	constant.nameAndTypeIndex = binaryStream.readU2(stream)
+	constant.classIndex       = binaryUtils.readU2(stream)
+	constant.nameAndTypeIndex = binaryUtils.readU2(stream)
 
 	debugPrint("InterfaceMethodref constant")
 	debugPrint("Class index         - " .. constant.classIndex)
@@ -218,8 +218,8 @@ constantPoolHandler[12] = function(stream)
 	local constant = {}
 	constant.type  = "NameAndType"
 
-	constant.nameIndex        = binaryStream.readU2(stream)
-	constant.descriptorIndex  = binaryStream.readU2(stream)
+	constant.nameIndex        = binaryUtils.readU2(stream)
+	constant.descriptorIndex  = binaryUtils.readU2(stream)
 
 	debugPrint("NameAndType constant")
 	debugPrint("Name index       - " .. constant.nameIndex)

@@ -1,20 +1,20 @@
 local javoc, constantPoolLoader = require("umfal")("javoc")
 
 local debugPrint = javoc.util.debug.print
-local binaryStream = javoc.util.binaryStream
+local binaryUtils = javoc.util.binaryUtils
 
 function constantPoolLoader.load(stream)
 	debugPrint("Loading constant pool")
 
 	local constantPool = {}
-	constantPool.size = binaryStream.readU2(stream)
+	constantPool.size = binaryUtils.readU2(stream)
 	debugPrint("Size of the constant pool - " .. constantPool.size)
 
 	local currentIndex = 1
 
 	debugPrint("Constants in the pool:")
 	while currentIndex < constantPool.size do
-		local tag = binaryStream.readU1(stream)
+		local tag = binaryUtils.readU1(stream)
 		debugPrint("Constant #" .. currentIndex .. " with tag " .. tag)
 		-- Since Double and Long constants occuppy two indexes in the
 		-- constant pool, they will return not one constant, but two:

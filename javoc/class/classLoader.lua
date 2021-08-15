@@ -1,7 +1,7 @@
 local javoc, classLoader = require("umfal")("javoc")
 
 local debugPrint = javoc.util.debug.print
-local binaryStream = javoc.util.binaryStream
+local binaryUtils = javoc.util.binaryUtils
 ---Loads a class from a file. Path is relative from classpath
 ---@param file string           @ Name of the class to load
 ---@param classpath string      @ Absolute path to the classes to load
@@ -50,7 +50,7 @@ end
 
 function classLoader.checkMagicValue(stream)
 	debugPrint("Loading 'magic value' (0xCAFEBABE)")
-	local magicValue = binaryStream.readU4(stream)
+	local magicValue = binaryUtils.readU4(stream)
 
 	return (magicValue == 0xCAFEBABE)
 end
@@ -59,8 +59,8 @@ function classLoader.loadVersion(stream)
 	debugPrint("Loading versions (major and minor)")
 	local version = {}
 
-	version.minor = binaryStream.readU2(stream)
-	version.major = binaryStream.readU2(stream)
+	version.minor = binaryUtils.readU2(stream)
+	version.major = binaryUtils.readU2(stream)
 
 	debugPrint("Versions loaded successfully!")
 	debugPrint("Major - " .. version.major .. "; Minor - " .. version.minor)
@@ -72,8 +72,8 @@ function classLoader.loadClassNames(stream, constantPool)
 	local thisClass  = {}
 	local superClass = {}
 
-	thisClass.index  = binaryStream.readU2(stream)
-	superClass.index = binaryStream.readU2(stream)
+	thisClass.index  = binaryUtils.readU2(stream)
+	superClass.index = binaryUtils.readU2(stream)
 
 	-- Both 'thisClassIndex' and 'superClassIndex' point at
 	-- the CONSTANT_Class, which points at the CONSTANT_Utf8,
